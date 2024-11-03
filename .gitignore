@@ -279,9 +279,7 @@ $RECYCLE.BIN/
 /test-dir
 /removed.log
 /.idea
-/subcleaner.conf
 /log/
 /logs/
 *.log*
-/regex_profiles/
 /databases/
