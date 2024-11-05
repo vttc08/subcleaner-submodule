@@ -14,15 +14,16 @@ def generate_report(subtitle: Subtitle) -> str:
     _reset()
     _add(f"{len(subtitle.ad_blocks)} deleted blocks and {len(subtitle.warning_blocks)} warnings remaining.")
 
+    if subtitle.warning_blocks and not args.errors_only:
+        _add("")
+        _add(_warning_card(subtitle.warning_blocks), " " * 4)
+        _add("")
+        # _add("To delete all remaining warnings run:")
+        # _add(f"python3 '{config.script_file}' '{subtitle.short_path}' --destroy {' '.join(subtitle.get_warning_indexes())}")
     if subtitle.ad_blocks:
         _add("")
         _add(_deleted_card(subtitle.ad_blocks), " " * 4)
-    if subtitle.warning_blocks and not args.errors_only:
-        _add("")
-        _add(_warning_card(subtitle.warning_blocks), " " * 40)
-        _add("")
-        _add("To delete all remaining warnings run:")
-        _add(f"python3 '{config.script_file}' '{subtitle.short_path}' --destroy {' '.join(subtitle.get_warning_indexes())}")
+
 
     return _report[1:]
 
@@ -52,14 +53,14 @@ def _reset() -> None:
 def _deleted_card(ad_blocks: Set[SubBlock]) -> str:
     ad_blocks_list = list(ad_blocks)
     ad_blocks_list.sort(key=lambda b: b.original_index)
-    card = "[---------Removed Blocks----------]\n"
+    card = "\033[0;31m[---------Removed Blocks----------]\n"
     for block in ad_blocks_list:
         card += f"{block.original_index}\n"
         card += f"{block}\n"
         if args.explain:
             card += f"reasons: ({', '.join(block.hints)})\n"
         card += "\n"
-    card = card[:-1] + "[---------------------------------]"
+    card = card[:-1] + "[---------------------------------]\033[0m"
     return card
 
 

@@ -283,3 +283,5 @@ $RECYCLE.BIN/
 /logs/
 *.log*
 /databases/
+/sub_tests/bad/*
+/sub_tests/good/*
